@@ -22,6 +22,7 @@ var parsedAchievementsJSON = try! JSONSerialization.jsonObject(with: rawAchievem
 
 func parseJSONAsDictionary(_ dictionary: NSDictionary) {
     let achievements = dictionary["achievements"] as! [AnyObject]
+    let categories = dictionary["categories"] as! [AnyObject]
     print("ACHIEVEMENTS ARRAY")
     for item in achievements {
         let title = item["title"] as! String
@@ -38,7 +39,25 @@ func parseJSONAsDictionary(_ dictionary: NSDictionary) {
             let url = icon["url"] as! String
         
         print("TITLE: \(title)\nDESC : \(description) \nACHIEVEMENT ID : \(achievementId) \nCATEGORY ID : \(categoryId) \nPOINTS : \(points)")
-        print("ICON: x :\(x), y :\(y), w :\(w), h :\(h), offset : \(offset), url : \(url)\n")
+        print("ICON: x :\(x), y :\(y), w :\(w), h :\(h), offset : \(offset), url : \(url)\n\n")
+    }
+    print("CATEGORIES ARRAY")
+    for item in categories {
+        let title = item["title"] as! String
+        let categoryId = item["categoryId"] as! Int
+        let featuredAchievementId = item["featuredAchievementId"] as! Int
+        print("TITLE: \(title) \nCATEGORY ID: \(categoryId) \nfeaturedAchievementId: \(featuredAchievementId)")
+        
+        if let children = item["children"] as? [AnyObject]{
+            for childItem in children {
+                let title = childItem["title"] as! String
+                let categoryId = childItem["categoryId"] as! Int
+                let featuredAchievementId = childItem["featuredAchievementId"] as! Int
+                print("CHILDREN TITLE: \(title) \nCHILDREN CATEGORY ID: \(categoryId) \nfCHILDREN eaturedAchievementId: \(featuredAchievementId)\n")
+            }
+        }else{
+            print("This Object does not have Children Array")
+        }
     }
 }
 
